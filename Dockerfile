@@ -26,8 +26,13 @@ RUN npm run build
 
 FROM base AS runner
 WORKDIR /app
+# Re-declare build ARGs so they're available in this stage
+ARG NEXT_PUBLIC_APP_BASE_HOST=localhost
+ARG NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_APP_BASE_HOST=$NEXT_PUBLIC_APP_BASE_HOST
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
 
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 
