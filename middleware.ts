@@ -20,11 +20,15 @@ function isAnalyticsPath(path: string) {
 }
 
 function isCustomDomain(host: string) {
-  // APP_BASE_HOST (runtime) takes precedence; NEXT_PUBLIC_APP_BASE_HOST is the build-time fallback
-  const appHost =
+  // APP_BASE_HOST (runtime) takes precedence; NEXT_PUBLIC_APP_BASE_HOST is the build-time fallback.
+  // Trim whitespace to guard against trailing newlines from env var injection.
+  const appHost = (
     process.env.APP_BASE_HOST ||
     process.env.NEXT_PUBLIC_APP_BASE_HOST ||
-    "";
+    ""
+  ).trim();
+  // Strip port from the request host before comparing (Host header may include :port).
+  const hostWithoutPort = host?.split(":")[0] ?? "";
   return (
     (process.env.NODE_ENV === "development" &&
       (host?.includes(".local") || host?.includes("papermark.dev"))) ||
@@ -34,7 +38,8 @@ function isCustomDomain(host: string) {
         host?.includes("papermark.io") ||
         host?.includes("papermark.com") ||
         host?.endsWith(".vercel.app") ||
-        (appHost !== "" && host === appHost)
+        (appHost !== "" &&
+          (host === appHost || hostWithoutPort === appHost))
       ))
   );
 }
