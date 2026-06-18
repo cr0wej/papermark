@@ -18,6 +18,9 @@ ENV NEXT_PUBLIC_APP_BASE_HOST=self-hosted.localhost
 ENV NEXT_PUBLIC_WEBHOOK_BASE_HOST=self-hosted.localhost
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=postgresql://placeholder:placeholder@placeholder:5432/placeholder
+ENV HANKO_API_KEY=placeholder
+ENV NEXT_PUBLIC_HANKO_TENANT_ID=placeholder
+ENV NEXT_PUBLIC_HANKO_FRONTEND_SDK_URL=https://cloud.hanko.io
 RUN npm run build
 
 FROM base AS runner
