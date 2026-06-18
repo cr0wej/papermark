@@ -75,7 +75,8 @@ export class SlackEventManager {
           }
         } catch (channelError) {
           console.error(
-            `Error sending to channel ${channel.name || channel.id}:`,
+            "Error sending to channel",
+            channel.name || channel.id,
             channelError,
           );
         }
@@ -118,18 +119,22 @@ export class SlackEventManager {
   }
 }
 
-export const slackEventManager = new SlackEventManager();
+let _slackEventManager: SlackEventManager | null = null;
+function getSlackEventManager(): SlackEventManager {
+  if (!_slackEventManager) _slackEventManager = new SlackEventManager();
+  return _slackEventManager;
+}
 
 export async function notifyDocumentView(
   data: Omit<SlackEventData, "eventType">,
 ) {
-  await slackEventManager.processEvent({ ...data, eventType: "document_view" });
+  await getSlackEventManager().processEvent({ ...data, eventType: "document_view" });
 }
 
 export async function notifyDataroomAccess(
   data: Omit<SlackEventData, "eventType">,
 ) {
-  await slackEventManager.processEvent({
+  await getSlackEventManager().processEvent({
     ...data,
     eventType: "dataroom_access",
   });
@@ -138,7 +143,7 @@ export async function notifyDataroomAccess(
 export async function notifyDocumentDownload(
   data: Omit<SlackEventData, "eventType">,
 ) {
-  await slackEventManager.processEvent({
+  await getSlackEventManager().processEvent({
     ...data,
     eventType: "document_download",
   });
