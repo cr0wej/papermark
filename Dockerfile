@@ -4,6 +4,7 @@ WORKDIR /app
 
 FROM base AS deps
 COPY package.json package-lock.json* ./
+COPY prisma ./prisma
 RUN npm ci
 
 FROM base AS builder
@@ -21,11 +22,16 @@ FROM base AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
-COPY --from=builder /app/package.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/prisma ./prisma
+
+RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
+
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+
+USER nextjs
 EXPOSE 3000
 ENV PORT=3000
 CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
