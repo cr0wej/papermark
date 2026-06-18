@@ -43,7 +43,8 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL || 'http://a83nf1zw32rv4d8ncd2cskpg.134.209.187.55.sslip.io' }}
-            NEXTAUTH_URL=${{ vars.NEXTAUTH_URL || 'http://a83nf1zw32rv4d8ncd2cskpg.134.209.187.55.sslip.io' }}
+            NEXT_PUBLIC_BASE_URL=${{ vars.NEXT_PUBLIC_BASE_URL || 'http://q4cg1rttvof1ricy63updc9r.134.209.187.55.sslip.io' }}
+            NEXTAUTH_URL=${{ vars.NEXTAUTH_URL || 'http://q4cg1rttvof1ricy63updc9r.134.209.187.55.sslip.io' }}
+            NEXT_PUBLIC_APP_BASE_HOST=${{ vars.NEXT_PUBLIC_APP_BASE_HOST || 'q4cg1rttvof1ricy63updc9r.134.209.187.55.sslip.io' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
