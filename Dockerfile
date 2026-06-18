@@ -12,8 +12,12 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ARG NEXTAUTH_URL=http://localhost:3000
+# These host vars must be non-empty for next.config.mjs validation; they won't
+# match any real request in a self-hosted single-domain deployment.
 ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
 ENV NEXTAUTH_URL=$NEXTAUTH_URL
+ENV NEXT_PUBLIC_APP_BASE_HOST=self-hosted.localhost
+ENV NEXT_PUBLIC_WEBHOOK_BASE_HOST=self-hosted.localhost
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=postgresql://placeholder:placeholder@placeholder:5432/placeholder
 RUN npm run build
