@@ -20,7 +20,11 @@ function isAnalyticsPath(path: string) {
 }
 
 function isCustomDomain(host: string) {
-  const appHost = process.env.NEXT_PUBLIC_APP_BASE_HOST || "";
+  // APP_BASE_HOST (runtime) takes precedence; NEXT_PUBLIC_APP_BASE_HOST is the build-time fallback
+  const appHost =
+    process.env.APP_BASE_HOST ||
+    process.env.NEXT_PUBLIC_APP_BASE_HOST ||
+    "";
   return (
     (process.env.NODE_ENV === "development" &&
       (host?.includes(".local") || host?.includes("papermark.dev"))) ||
